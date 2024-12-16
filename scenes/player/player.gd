@@ -1,8 +1,28 @@
 extends CharacterBody3D
 
+var _mouse_input: bool = false # is the mouse moving?
+var _rotation_input: float
+var _tilt_input: float 
+
 
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
+
+func _ready():
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED # Hide mouse cursor
+
+func _unhandled_input(event): # Built-in function. Fires evtime mouse moves
+	# Check if the event is mouse moving
+	# AND also checks if our mouse is in capture mode
+	_mouse_input = event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED
+	if _mouse_input == true:
+		_rotation_input = -event.relative.x
+		_tilt_input = -event.relative.y
+	
+	print(Vector2(_rotation_input, _tilt_input))
+	
+
+
 
 
 func _physics_process(delta):
