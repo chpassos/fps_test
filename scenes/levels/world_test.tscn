@@ -1,18 +1,49 @@
-[gd_scene load_steps=3 format=3 uid="uid://5qupfwpo3jog"]
+[gd_scene load_steps=7 format=3 uid="uid://5qupfwpo3jog"]
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_ofbgj"]
-size = Vector2(5, 5)
+[ext_resource type="Shader" path="res://shader/grid.gdshader" id="1_2iyeg"]
+[ext_resource type="Texture2D" uid="uid://byqee3np6xgsl" path="res://assets/textures/grid.jpg" id="2_h4agk"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_qk2uf"]
-size = Vector3(5, 0, 5)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_niu0l"]
+render_priority = 0
+shader = ExtResource("1_2iyeg")
+shader_parameter/albedo = null
+shader_parameter/point_size = 1.0
+shader_parameter/roughness = 0.5
+shader_parameter/metallic_texture_channel = null
+shader_parameter/specular = 0.5
+shader_parameter/metallic = null
+shader_parameter/uv1_blend_sharpness = 1.0
+shader_parameter/uv1_scale = Vector3(0.5, 0.5, 0.5)
+shader_parameter/uv1_offset = null
+shader_parameter/uv2_scale = Vector3(1, 1, 1)
+shader_parameter/uv2_offset = null
+shader_parameter/texture_albedo = ExtResource("2_h4agk")
+shader_parameter/texture_roughness = ExtResource("2_h4agk")
+
+[sub_resource type="BoxMesh" id="BoxMesh_ghr0g"]
+material = SubResource("ShaderMaterial_niu0l")
+size = Vector3(20, 0.5, 20)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_omox1"]
+size = Vector3(20, 0.5, 20)
+
+[sub_resource type="BoxMesh" id="BoxMesh_e5ed2"]
+size = Vector3(2, 2, 2)
 
 [node name="WorldTest" type="Node3D"]
 
 [node name="Floor" type="MeshInstance3D" parent="."]
-transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
-mesh = SubResource("PlaneMesh_ofbgj")
+mesh = SubResource("BoxMesh_ghr0g")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Floor"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Floor/StaticBody3D"]
-shape = SubResource("BoxShape3D_qk2uf")
+shape = SubResource("BoxShape3D_omox1")
+
+[node name="Box" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1.29559, -5)
+mesh = SubResource("BoxMesh_e5ed2")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Box"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Box/StaticBody3D"]
