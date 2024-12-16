@@ -11,3 +11,8 @@ shape = SubResource("CapsuleShape3D_1rbmp")
 
 [node name="PlaceHolderMesh" type="MeshInstance3D" parent="CollisionShape3D"]
 mesh = SubResource("CapsuleMesh_0yxtb")
+
+[node name="CameraController" type="Node3D" parent="."]
+
+[node name="Camera3D" type="Camera3D" parent="CameraController"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.532511, 0)
