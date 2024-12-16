@@ -15,6 +15,7 @@ var _mouse_rotation: Vector3
 @export var TILT_LOWER_LIMIT := deg_to_rad(-90.0)
 @export var TILT_UPPER_LIMIT := deg_to_rad(90.0)
 @export var CAMERA_CONTROLLER: Node3D
+@export var MOUSE_SENSITIVITY: float = 0.5
 
 
 
@@ -26,8 +27,8 @@ func _unhandled_input(event): # Built-in function. Fires evtime mouse moves
 	# AND also checks if our mouse is in capture mode
 	_mouse_input = event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED
 	if _mouse_input == true:
-		_rotation_input = -event.relative.x
-		_tilt_input = -event.relative.y
+		_rotation_input = -event.relative.x * MOUSE_SENSITIVITY
+		_tilt_input = -event.relative.y * MOUSE_SENSITIVITY
 
 
 
