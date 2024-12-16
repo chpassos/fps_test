@@ -11,17 +11,31 @@ var _mouse_rotation: Vector3
 var _player_rotation: Vector3
 var _camera_rotation: Vector3
 
+var _is_crouching: bool = false
+
+
 @export var SPEED: float = 5.0
 @export var JUMP_VELOCITY: float = 4.5
+@export_range(5, 10, 0.1) var CROUCH_SPEED: float = 7.0
+
 
 @export var TILT_LOWER_LIMIT := deg_to_rad(-90.0)
 @export var TILT_UPPER_LIMIT := deg_to_rad(90.0)
 @export var CAMERA_CONTROLLER: Node3D
 @export var MOUSE_SENSITIVITY: float = 0.5
 
+@export var ANIMATION_PLAYER: AnimationPlayer
+
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED # Hide mouse cursor
+
+
+func _input(event):
+	if event.is_action_pressed("crouch"):
+		_toggle_crouch()
+
+
 
 func _unhandled_input(event): # Built-in function. Fires evtime mouse moves
 	# Check if the event IS ACTUALLY the mouse moving
@@ -68,11 +82,17 @@ func _update_camera(delta):
 	_tilt_input = 0.0
 
 
+func _toggle_crouch():
+	if _is_crouching == true:
+		ANIMATION_PLAYER.play("crouch", -1, -CROUCH_SPEED, true)
+	elif _is_crouching == false:
+		ANIMATION_PLAYER.play("crouch", -1, CROUCH_SPEED)
+	
+	_is_crouching = !_is_crouching
+
+
 func _physics_process(delta):
 	_update_camera(delta)
-	
-	
-	
 	
 	# Add the gravity.
 	if not is_on_floor():
