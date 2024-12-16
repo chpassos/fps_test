@@ -1,8 +1,18 @@
-[gd_scene load_steps=2 format=3 uid="uid://5qupfwpo3jog"]
+[gd_scene load_steps=3 format=3 uid="uid://5qupfwpo3jog"]
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_wnltf"]
+[sub_resource type="PlaneMesh" id="PlaneMesh_ofbgj"]
+size = Vector2(5, 5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qk2uf"]
+size = Vector3(5, 0, 5)
 
 [node name="WorldTest" type="Node3D"]
 
 [node name="Floor" type="MeshInstance3D" parent="."]
-mesh = SubResource("PlaneMesh_wnltf")
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, 0, 0)
+mesh = SubResource("PlaneMesh_ofbgj")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Floor"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor/StaticBody3D"]
+shape = SubResource("BoxShape3D_qk2uf")
