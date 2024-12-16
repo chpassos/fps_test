@@ -1,49 +1,46 @@
-[gd_scene load_steps=7 format=3 uid="uid://5qupfwpo3jog"]
+[gd_scene load_steps=6 format=3 uid="uid://bsvorsgxn1hiq"]
 
-[ext_resource type="Shader" path="res://shader/grid.gdshader" id="1_2iyeg"]
-[ext_resource type="Texture2D" uid="uid://byqee3np6xgsl" path="res://assets/textures/grid.jpg" id="2_h4agk"]
+[sub_resource type="Environment" id="Environment_ruv4x"]
+background_mode = 2
+ambient_light_color = Color(0.230411, 0.429115, 0.742461, 1)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_niu0l"]
-render_priority = 0
-shader = ExtResource("1_2iyeg")
-shader_parameter/albedo = null
-shader_parameter/point_size = 1.0
-shader_parameter/roughness = 0.5
-shader_parameter/metallic_texture_channel = null
-shader_parameter/specular = 0.5
-shader_parameter/metallic = null
-shader_parameter/uv1_blend_sharpness = 1.0
-shader_parameter/uv1_scale = Vector3(0.5, 0.5, 0.5)
-shader_parameter/uv1_offset = null
-shader_parameter/uv2_scale = Vector3(1, 1, 1)
-shader_parameter/uv2_offset = null
-shader_parameter/texture_albedo = ExtResource("2_h4agk")
-shader_parameter/texture_roughness = ExtResource("2_h4agk")
-
-[sub_resource type="BoxMesh" id="BoxMesh_ghr0g"]
-material = SubResource("ShaderMaterial_niu0l")
+[sub_resource type="BoxMesh" id="BoxMesh_t5ij0"]
 size = Vector3(20, 0.5, 20)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_omox1"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_xuwro"]
 size = Vector3(20, 0.5, 20)
 
-[sub_resource type="BoxMesh" id="BoxMesh_e5ed2"]
+[sub_resource type="BoxMesh" id="BoxMesh_65uqy"]
+size = Vector3(2, 2, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_aby0v"]
 size = Vector3(2, 2, 2)
 
 [node name="WorldTest" type="Node3D"]
 
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_ruv4x")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.753243, -0.0141893, 0.657589, -0.258975, 0.912613, 0.316338, -0.604613, -0.408578, 0.683745, 6.51934, 8.99334, 7.46989)
+shadow_enabled = true
+
 [node name="Floor" type="MeshInstance3D" parent="."]
-mesh = SubResource("BoxMesh_ghr0g")
+mesh = SubResource("BoxMesh_t5ij0")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Floor"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Floor/StaticBody3D"]
-shape = SubResource("BoxShape3D_omox1")
+shape = SubResource("BoxShape3D_xuwro")
 
 [node name="Box" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1.29559, -5)
-mesh = SubResource("BoxMesh_e5ed2")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.31286, 0)
+mesh = SubResource("BoxMesh_65uqy")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Box"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Box/StaticBody3D"]
+shape = SubResource("BoxShape3D_aby0v")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-0.127411, 0, 0.99185, 0, 1, 0, -0.99185, 0, -0.127411, 8.25057, 3.81946, 0)
