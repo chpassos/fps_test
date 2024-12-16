@@ -1,7 +1,6 @@
 extends CharacterBody3D
 
-const SPEED = 5.0
-const JUMP_VELOCITY = 4.5
+
 
 # Captures mouse movement
 var _mouse_input: bool = false # is the mouse moving?
@@ -11,6 +10,13 @@ var _tilt_input: float
 
 var _mouse_rotation: Vector3
 
+# Handles and manages player rotation aligned with camera rotation
+var _player_rotation: Vector3
+var _camera_rotation: Vector3
+
+
+@export var SPEED: float = 5.0
+@export var JUMP_VELOCITY: float = 4.5
 
 @export var TILT_LOWER_LIMIT := deg_to_rad(-90.0)
 @export var TILT_UPPER_LIMIT := deg_to_rad(90.0)
@@ -39,8 +45,14 @@ func _update_camera(delta):
 	_mouse_rotation.x = clamp(_mouse_rotation.x, TILT_LOWER_LIMIT, TILT_UPPER_LIMIT)
 	_mouse_rotation.y += _rotation_input * delta
 	
-	CAMERA_CONTROLLER.transform.basis = Basis.from_euler(_mouse_rotation)
+	# Rotate the player
+	_player_rotation = Vector3(0.0, _mouse_rotation.y, 0.0)
+	_camera_rotation = Vector3(_mouse_rotation.x, 0.0, 0.0)
+	
+	CAMERA_CONTROLLER.transform.basis = Basis.from_euler(_camera_rotation)
 	CAMERA_CONTROLLER.rotation.z = 0.0
+	
+	global_transform.basis = Basis.from_euler(_player_rotation)
 	
 	_rotation_input = 0.0
 	_tilt_input = 0.0

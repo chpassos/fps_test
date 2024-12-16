@@ -46,4 +46,4 @@ shape = SubResource("BoxShape3D_aby0v")
 
 [node name="Player" parent="." instance=ExtResource("1_safxy")]
 transform = Transform3D(0.454255, 0, -0.890872, 0, 1, 0, 0.890872, 0, 0.454255, 0.891792, 1.45398, 0)
-MOUSE_SENSITIVITY = 0.1
+MOUSE_SENSITIVITY = 0.2
