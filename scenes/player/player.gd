@@ -1,19 +1,15 @@
 extends CharacterBody3D
 
-
-
 # Captures mouse movement
 var _mouse_input: bool = false # is the mouse moving?
 var _rotation_input: float
 var _tilt_input: float 
-
 
 var _mouse_rotation: Vector3
 
 # Handles and manages player rotation aligned with camera rotation
 var _player_rotation: Vector3
 var _camera_rotation: Vector3
-
 
 @export var SPEED: float = 5.0
 @export var JUMP_VELOCITY: float = 4.5
@@ -24,14 +20,14 @@ var _camera_rotation: Vector3
 @export var MOUSE_SENSITIVITY: float = 0.5
 
 
-
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED # Hide mouse cursor
 
 func _unhandled_input(event): # Built-in function. Fires evtime mouse moves
-	# Check if the event is mouse moving
+	# Check if the event IS ACTUALLY the mouse moving
 	# AND also checks if our mouse is in capture mode
 	_mouse_input = event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED
+	# If thats so, we change some variables!
 	if _mouse_input == true:
 		_rotation_input = -event.relative.x * MOUSE_SENSITIVITY
 		_tilt_input = -event.relative.y * MOUSE_SENSITIVITY
@@ -41,22 +37,35 @@ func _unhandled_input(event): # Built-in function. Fires evtime mouse moves
 func _update_camera(delta):
 	
 	# Rotate camera using euler rotation
+	# In here, we begin capturing the values from the mouse movement input
 	_mouse_rotation.x += _tilt_input * delta
 	_mouse_rotation.x = clamp(_mouse_rotation.x, TILT_LOWER_LIMIT, TILT_UPPER_LIMIT)
 	_mouse_rotation.y += _rotation_input * delta
 	
 	# Rotate the player
+	# Then we handle other variables...
+	## For the Y-axis rotation
 	_player_rotation = Vector3(0.0, _mouse_rotation.y, 0.0)
+	
+	## For the X-axis rotation
 	_camera_rotation = Vector3(_mouse_rotation.x, 0.0, 0.0)
 	
+	## CAMERA ROTATION HERE!
+	### The basis part of the transform is responsible for the node's rotation and scale
+	### The basis is a 3x3 matrix that encodes rotation and scaling
+	### Also, from_euler creates the rotation for the other axis, not just X-axis
 	CAMERA_CONTROLLER.transform.basis = Basis.from_euler(_camera_rotation)
+	## Z-axis will always be 0
 	CAMERA_CONTROLLER.rotation.z = 0.0
 	
+	## PLAYER ROTATION HERE!
+	### This line of code ensures that our player rotates with camera
+	### Therefore, we can always walk forward, regardless of the camera rotation
 	global_transform.basis = Basis.from_euler(_player_rotation)
 	
+	# Reset the variables, so our camera does not keeps moving!
 	_rotation_input = 0.0
 	_tilt_input = 0.0
-
 
 
 func _physics_process(delta):
