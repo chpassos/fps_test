@@ -14,6 +14,16 @@ config/name="FPS Test"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[file_customization]
+
+folder_colors={
+"res://assets/": "red",
+"res://components/": "yellow",
+"res://globals/": "purple",
+"res://scenes/": "green",
+"res://ui/": "pink"
+}
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"

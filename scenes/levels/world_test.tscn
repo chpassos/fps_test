@@ -1,4 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://bsvorsgxn1hiq"]
+[gd_scene load_steps=7 format=3 uid="uid://bsvorsgxn1hiq"]
+
+[ext_resource type="PackedScene" uid="uid://cadd6mv37kego" path="res://scenes/player/player.tscn" id="1_safxy"]
 
 [sub_resource type="Environment" id="Environment_ruv4x"]
 background_mode = 2
@@ -34,7 +36,7 @@ mesh = SubResource("BoxMesh_t5ij0")
 shape = SubResource("BoxShape3D_xuwro")
 
 [node name="Box" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.31286, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.21087, 1.31286, 0)
 mesh = SubResource("BoxMesh_65uqy")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Box"]
@@ -42,5 +44,5 @@ mesh = SubResource("BoxMesh_65uqy")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Box/StaticBody3D"]
 shape = SubResource("BoxShape3D_aby0v")
 
-[node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(-0.127411, 0, 0.99185, 0, 1, 0, -0.99185, 0, -0.127411, 8.25057, 3.81946, 0)
+[node name="Player" parent="." instance=ExtResource("1_safxy")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.891792, 1.45398, 0)
