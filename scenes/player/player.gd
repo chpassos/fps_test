@@ -13,11 +13,13 @@ var _camera_rotation: Vector3
 
 var _is_crouching: bool = false
 
+var _speed: float
 
-@export var SPEED: float = 5.0
+@export var SPEED_DEFAULT: float = 5.0
+@export var SPEED_CROUCH: float = 2.0
+
 @export var JUMP_VELOCITY: float = 4.5
 @export_range(5, 10, 0.1) var CROUCH_SPEED: float = 7.0
-
 
 @export var TILT_LOWER_LIMIT := deg_to_rad(-90.0)
 @export var TILT_UPPER_LIMIT := deg_to_rad(90.0)
@@ -25,15 +27,50 @@ var _is_crouching: bool = false
 @export var MOUSE_SENSITIVITY: float = 0.5
 
 @export var ANIMATION_PLAYER: AnimationPlayer
+@export var CROUCH_SHAPECAST: Node3D
 
 
 func _ready():
+	_speed = SPEED_DEFAULT
+	
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED # Hide mouse cursor
+	
+	CROUCH_SHAPECAST.add_exception($".")
+
+func _crouching(state: bool):
+	match state:
+		true:
+			ANIMATION_PLAYER.play("crouch", -1, CROUCH_SPEED)
+			_set_movement_speed("crouching")
+		false:
+			ANIMATION_PLAYER.play("crouch", -1, -CROUCH_SPEED, true)
+			_set_movement_speed("default")
+
+func _set_movement_speed(state: String):
+	match state:
+		"default":
+			_speed = SPEED_DEFAULT
+		"crouching":
+			_speed = SPEED_CROUCH
 
 
 func _input(event):
-	if event.is_action_pressed("crouch"):
+	if event.is_action_pressed("crouch") and is_on_floor() == true:
 		_toggle_crouch()
+
+func _toggle_crouch():
+	if _is_crouching == true and CROUCH_SHAPECAST.is_colliding() == false:
+		_crouching(false)
+	elif _is_crouching == false:
+		_crouching(true)
+
+func _on_animation_player_animation_started(anim_name):
+	if anim_name == "crouch":
+		_is_crouching = !_is_crouching
+
+
+
+
 
 
 
@@ -82,13 +119,9 @@ func _update_camera(delta):
 	_tilt_input = 0.0
 
 
-func _toggle_crouch():
-	if _is_crouching == true:
-		ANIMATION_PLAYER.play("crouch", -1, -CROUCH_SPEED, true)
-	elif _is_crouching == false:
-		ANIMATION_PLAYER.play("crouch", -1, CROUCH_SPEED)
-	
-	_is_crouching = !_is_crouching
+
+
+
 
 
 func _physics_process(delta):
@@ -99,7 +132,7 @@ func _physics_process(delta):
 		velocity += get_gravity() * delta
 
 	# Handle jump.
-	if Input.is_action_just_pressed("jump") and is_on_floor():
+	if Input.is_action_just_pressed("jump") and is_on_floor() and _is_crouching == false:
 		velocity.y = JUMP_VELOCITY
 
 	# Get the input direction and handle the movement/deceleration.
@@ -107,10 +140,10 @@ func _physics_process(delta):
 	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_backward")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	if direction:
-		velocity.x = direction.x * SPEED
-		velocity.z = direction.z * SPEED
+		velocity.x = direction.x * _speed
+		velocity.z = direction.z * _speed
 	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-		velocity.z = move_toward(velocity.z, 0, SPEED)
+		velocity.x = move_toward(velocity.x, 0, _speed)
+		velocity.z = move_toward(velocity.z, 0, _speed)
 
 	move_and_slide()

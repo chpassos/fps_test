@@ -60,5 +60,5 @@ mesh = SubResource("BoxMesh_8lsd6")
 shape = SubResource("BoxShape3D_3lt5p")
 
 [node name="Player" parent="." instance=ExtResource("1_safxy")]
-transform = Transform3D(0.454255, 0, -0.890872, 0, 1, 0, 0.890872, 0, 0.454255, 0.892, 1.26983, -6.02824)
+transform = Transform3D(0.370184, 0, 0.928959, 0, 1, 0, -0.928959, 0, 0.370184, 2.79606, 1.26983, -5.30073)
 MOUSE_SENSITIVITY = 0.2
