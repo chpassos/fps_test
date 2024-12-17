@@ -1,7 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://cadd6mv37kego"]
+[gd_scene load_steps=11 format=3 uid="uid://cadd6mv37kego"]
 
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_b82jt"]
 [ext_resource type="Script" path="res://scripts/reticle.gd" id="2_0pkrv"]
+[ext_resource type="Theme" uid="uid://dsbb335vvwja1" path="res://ui/debug.tres" id="3_1t664"]
+[ext_resource type="Script" path="res://scripts/debug.gd" id="4_vjgr0"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1rbmp"]
 
@@ -168,5 +170,22 @@ width = 2.0
 [node name="Left" type="Line2D" parent="UserInterface/Reticle"]
 points = PackedVector2Array(-5, 0, -15, 0)
 width = 2.0
+
+[node name="DebugPanel" type="PanelContainer" parent="UserInterface"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 210.0
+offset_bottom = 50.0
+theme = ExtResource("3_1t664")
+script = ExtResource("4_vjgr0")
+
+[node name="MarginContainer" type="MarginContainer" parent="UserInterface/DebugPanel"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UserInterface/DebugPanel/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
 
 [connection signal="animation_started" from="AnimationPlayer" to="." method="_on_animation_player_animation_started"]
