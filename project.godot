@@ -21,6 +21,7 @@ folder_colors={
 "res://components/": "yellow",
 "res://globals/": "purple",
 "res://scenes/": "green",
+"res://scripts/": "orange",
 "res://ui/": "pink"
 }
 

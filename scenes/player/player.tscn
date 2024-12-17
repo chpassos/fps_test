@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://cadd6mv37kego"]
+[gd_scene load_steps=9 format=3 uid="uid://cadd6mv37kego"]
 
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_b82jt"]
+[ext_resource type="Script" path="res://scripts/reticle.gd" id="2_0pkrv"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1rbmp"]
 
@@ -96,6 +97,7 @@ _data = {
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("CAMERA_CONTROLLER", "ANIMATION_PLAYER", "CROUCH_SHAPECAST")]
 script = ExtResource("1_b82jt")
 CAMERA_CONTROLLER = NodePath("CameraController")
+MOUSE_SENSITIVITY = 0.3
 ANIMATION_PLAYER = NodePath("AnimationPlayer")
 CROUCH_SHAPECAST = NodePath("ShapeCast3D")
 
@@ -123,5 +125,45 @@ libraries = {
 shape = SubResource("SphereShape3D_8oi58")
 target_position = Vector3(0, 0.85, 0)
 debug_shape_custom_color = Color(0, 0.658824, 0, 1)
+
+[node name="UserInterface" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="Reticle" type="CenterContainer" parent="UserInterface"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_0pkrv")
+
+[node name="Top" type="Line2D" parent="UserInterface/Reticle"]
+points = PackedVector2Array(0, -5, 0, -15)
+width = 2.0
+
+[node name="Right" type="Line2D" parent="UserInterface/Reticle"]
+points = PackedVector2Array(5, 0, 15, 0)
+width = 2.0
+
+[node name="Bottom" type="Line2D" parent="UserInterface/Reticle"]
+points = PackedVector2Array(0, 5, 0, 15)
+width = 2.0
+
+[node name="Left" type="Line2D" parent="UserInterface/Reticle"]
+points = PackedVector2Array(-5, 0, -15, 0)
+width = 2.0
 
 [connection signal="animation_started" from="AnimationPlayer" to="." method="_on_animation_player_animation_started"]
