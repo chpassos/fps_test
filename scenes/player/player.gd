@@ -12,12 +12,14 @@ var _player_rotation: Vector3
 var _camera_rotation: Vector3
 
 var _is_crouching: bool = false
+var _is_moving_forward: bool = false
 
 var _speed: float
 
-@export var SPEED_DEFAULT: float = 5.0
-@export var SPEED_CROUCH: float = 2.0
-@export var SPEED_RUN: float = 8.0
+
+@export var SPEED_DEFAULT: float = 2.0
+@export var SPEED_CROUCH: float = 1.0
+@export var SPEED_RUN: float = 10.0
 
 @export var JUMP_VELOCITY: float = 4.5
 @export_range(5, 10, 0.1) var CROUCH_SPEED: float = 7.0
@@ -61,10 +63,17 @@ func _input(event):
 	if event.is_action_pressed("crouch") and is_on_floor() == true:
 		_toggle_crouch()
 	
+	
+	if Input.is_action_just_pressed("move_forward"):
+		_is_moving_forward = true
+	elif Input.is_action_just_released("move_forward"):
+		_is_moving_forward = false
+	
 	if event.is_action_pressed("run"):
-		_set_movement_speed("running")
-	elif event.is_action_released("run"):
-		_set_movement_speed("default")
+		if _is_moving_forward == true:
+			_set_movement_speed("running")
+		elif event.is_action_released("run"):
+			_set_movement_speed("default")
 
 
 
@@ -127,9 +136,6 @@ func _update_camera(delta):
 	# Reset the variables, so our camera does not keeps moving!
 	_rotation_input = 0.0
 	_tilt_input = 0.0
-
-
-
 
 
 
