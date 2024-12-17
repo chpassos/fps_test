@@ -96,9 +96,6 @@ _data = {
 
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("CAMERA_CONTROLLER", "ANIMATION_PLAYER", "CROUCH_SHAPECAST")]
 script = ExtResource("1_b82jt")
-SPEED_DEFAULT = 1.0
-SPEED_RUN = 5.0
-SPEED_DASH = 20.0
 CAMERA_CONTROLLER = NodePath("CameraController")
 MOUSE_SENSITIVITY = 0.3
 ANIMATION_PLAYER = NodePath("AnimationPlayer")
@@ -138,7 +135,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 1
 
-[node name="Reticle" type="CenterContainer" parent="UserInterface"]
+[node name="Reticle" type="CenterContainer" parent="UserInterface" node_paths=PackedStringArray("RETICLE_LINES", "PLAYER_CONTROLLER")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -152,6 +149,9 @@ offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("2_0pkrv")
+RETICLE_LINES = [NodePath("Top"), NodePath("Right"), NodePath("Bottom"), NodePath("Left")]
+PLAYER_CONTROLLER = NodePath("../..")
+RETICLE_DISTANCE = 4.0
 
 [node name="Top" type="Line2D" parent="UserInterface/Reticle"]
 points = PackedVector2Array(0, -5, 0, -15)
