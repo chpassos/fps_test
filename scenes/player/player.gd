@@ -12,7 +12,6 @@ var _player_rotation: Vector3
 var _camera_rotation: Vector3
 
 var _is_crouching: bool = false
-var _is_moving_forward: bool = false
 
 var _speed: float
 
@@ -63,18 +62,10 @@ func _input(event):
 	if event.is_action_pressed("crouch") and is_on_floor() == true:
 		_toggle_crouch()
 	
-	
-	if Input.is_action_just_pressed("move_forward"):
-		_is_moving_forward = true
-	elif Input.is_action_just_released("move_forward"):
-		_is_moving_forward = false
-	
 	if event.is_action_pressed("run"):
-		if _is_moving_forward == true:
-			_set_movement_speed("running")
-		elif event.is_action_released("run"):
-			_set_movement_speed("default")
-
+		_set_movement_speed("running")
+	elif event.is_action_released("run"):
+		_set_movement_speed("default")
 
 
 func _toggle_crouch():
