@@ -96,6 +96,9 @@ _data = {
 
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("CAMERA_CONTROLLER", "ANIMATION_PLAYER", "CROUCH_SHAPECAST")]
 script = ExtResource("1_b82jt")
+SPEED_DEFAULT = 1.0
+SPEED_RUN = 5.0
+SPEED_DASH = 20.0
 CAMERA_CONTROLLER = NodePath("CameraController")
 MOUSE_SENSITIVITY = 0.3
 ANIMATION_PLAYER = NodePath("AnimationPlayer")
