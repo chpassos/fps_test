@@ -49,6 +49,12 @@ func _crouching(state: bool):
 			ANIMATION_PLAYER.play("crouch", -1, -CROUCH_SPEED, true)
 			_set_movement_speed("default")
 
+func _dash():
+	_set_movement_speed("dashing")
+	await get_tree().create_timer(0.1).timeout
+	_set_movement_speed("default")
+	await get_tree().create_timer(1).timeout
+
 func _set_movement_speed(state: String):
 	match state:
 		"default":
@@ -67,13 +73,6 @@ func _input(event):
 	
 	if event.is_action_pressed("run"):
 		_dash()
-
-
-func _dash():
-	_set_movement_speed("dashing")
-	await get_tree().create_timer(0.1).timeout
-	_set_movement_speed("default")
-	await get_tree().create_timer(1).timeout
 
 func _toggle_crouch():
 	if _is_crouching == true and CROUCH_SHAPECAST.is_colliding() == false:
