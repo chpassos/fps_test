@@ -1,5 +1,10 @@
 extends CharacterBody3D
 
+
+const FALL_ACCELERATION: float = 5.0
+const MAX_FALL_SPEED: float = -50.0
+
+
 # Captures mouse movement
 var _mouse_input: bool = false # is the mouse moving?
 var _rotation_input: float
@@ -138,15 +143,22 @@ func _update_camera(delta):
 
 
 func _physics_process(delta):
+	
 	_update_camera(delta)
 	
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
-
-	# Handle jump.
+		velocity.y -= FALL_ACCELERATION * delta  # Accelerate downward
+	
+	# Cap the falling speed
+	if velocity.y < MAX_FALL_SPEED:
+		velocity.y = MAX_FALL_SPEED
+	
+	## Handle jump.
 	if Input.is_action_just_pressed("jump") and is_on_floor() and _is_crouching == false:
 		velocity.y = JUMP_VELOCITY
+	
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
