@@ -1,9 +1,7 @@
 extends CharacterBody3D
 
-
 const FALL_ACCELERATION: float = 5.0
 const MAX_FALL_SPEED: float = -50.0
-
 
 # Captures mouse movement
 var _mouse_input: bool = false # is the mouse moving?
@@ -20,7 +18,6 @@ var _is_crouching: bool = false
 
 var _speed: float
 
-
 @export var SPEED_DEFAULT: float = 2.0
 @export var SPEED_CROUCH: float = 1.0
 @export var SPEED_RUN: float = 10.0
@@ -36,7 +33,6 @@ var _speed: float
 
 @export var ANIMATION_PLAYER: AnimationPlayer
 @export var CROUCH_SHAPECAST: Node3D
-
 
 func _ready():
 	_speed = SPEED_DEFAULT
@@ -71,7 +67,6 @@ func _set_movement_speed(state: String):
 		"dashing":
 			_speed = SPEED_DASH
 
-
 func _input(event):
 	if event.is_action_pressed("crouch") and is_on_floor() == true:
 		_toggle_crouch()
@@ -89,12 +84,6 @@ func _on_animation_player_animation_started(anim_name):
 	if anim_name == "crouch":
 		_is_crouching = !_is_crouching
 
-
-
-
-
-
-
 func _unhandled_input(event): # Built-in function. Fires evtime mouse moves
 	# Check if the event IS ACTUALLY the mouse moving
 	# AND also checks if our mouse is in capture mode
@@ -103,8 +92,6 @@ func _unhandled_input(event): # Built-in function. Fires evtime mouse moves
 	if _mouse_input == true:
 		_rotation_input = -event.relative.x * MOUSE_SENSITIVITY
 		_tilt_input = -event.relative.y * MOUSE_SENSITIVITY
-
-
 
 func _update_camera(delta):
 	
@@ -143,6 +130,11 @@ func _update_camera(delta):
 
 
 func _physics_process(delta):
+	
+	Global.debug.add_property("MovementSpeed", _speed, 2)
+	Global.debug.add_property("MouseRotation", Vector2(_mouse_rotation.x, _mouse_rotation.y), 3)
+	Global.debug.add_property("Position", position, 4)
+	Global.debug.add_property("Crouching", _is_crouching, 5)	
 	
 	_update_camera(delta)
 	

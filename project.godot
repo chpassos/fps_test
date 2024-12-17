@@ -14,6 +14,10 @@ config/name="FPS Test"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[autoload]
+
+Global="*res://globals/global.gd"
+
 [file_customization]
 
 folder_colors={
