@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cadd6mv37kego"]
+[gd_scene load_steps=15 format=3 uid="uid://cadd6mv37kego"]
 
 [ext_resource type="Script" path="res://scenes/player/player.gd" id="1_b82jt"]
 [ext_resource type="Script" path="res://scripts/reticle.gd" id="2_0pkrv"]
@@ -50,6 +50,39 @@ tracks/2/keys = {
 "update": 0,
 "values": [Vector3(0, 0, 0)]
 }
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("CameraController:position:x")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/4/type = "bezier"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("CameraController:position:y")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/5/type = "bezier"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("CameraController:position:z")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
 
 [sub_resource type="Animation" id="Animation_vgy14"]
 resource_name = "crouch"
@@ -91,10 +124,50 @@ tracks/2/keys = {
 "values": [Vector3(0, 0, 0), Vector3(0, -0.25, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_72rpe"]
+resource_name = "walking"
+length = 2.0
+loop_mode = 1
+step = 0.1
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CameraController:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0, 0),
+"points": PackedFloat32Array(0.0150091, -0.25, 0, 0.25, 0, 0, -0.5, 4.28667e-05, 0.25, 0, -0.0150966, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0.0151553, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("CameraController:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.3, 0.00317099, 0.0150717, -0.25, 0, 0.25, 0, 5.06756e-05, -0.3, 0.00319288, 0.3, 0.00319288, 0.0149991, -0.25, 0, 0.25, 0, 0, -0.3, 0.00324355, 0.25, 0),
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("CameraController:position:z")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0, 0, 0, 0, 0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0, 0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2)
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_tbjuy"]
 _data = {
 "RESET": SubResource("Animation_y17wb"),
-"crouch": SubResource("Animation_vgy14")
+"crouch": SubResource("Animation_vgy14"),
+"walking": SubResource("Animation_72rpe")
 }
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_8oi58"]
@@ -110,6 +183,7 @@ CROUCH_SHAPECAST = NodePath("ShapeCast3D")
 shape = SubResource("CapsuleShape3D_1rbmp")
 
 [node name="PlaceHolderMesh" type="MeshInstance3D" parent="CollisionShape3D"]
+visible = false
 mesh = SubResource("CapsuleMesh_0yxtb")
 
 [node name="CameraController" type="Node3D" parent="."]
@@ -195,10 +269,12 @@ layout_mode = 2
 script = ExtResource("5_y3k37")
 CURRENT_STATE = NodePath("IdlePlayerState")
 
-[node name="IdlePlayerState" type="Node" parent="PlayerStateMachine"]
+[node name="IdlePlayerState" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("ANIMATION")]
 script = ExtResource("6_eokhu")
+ANIMATION = NodePath("../../AnimationPlayer")
 
-[node name="WalkingPlayerState" type="Node" parent="PlayerStateMachine"]
+[node name="WalkingPlayerState" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("ANIMATION")]
 script = ExtResource("7_psxs0")
+ANIMATION = NodePath("../../AnimationPlayer")
 
 [connection signal="animation_started" from="AnimationPlayer" to="." method="_on_animation_player_animation_started"]
