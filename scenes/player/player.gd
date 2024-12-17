@@ -35,6 +35,8 @@ var _speed: float
 @export var CROUCH_SHAPECAST: Node3D
 
 func _ready():
+	Global.player = self
+	
 	_speed = SPEED_DEFAULT
 	
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED # Hide mouse cursor
