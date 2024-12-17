@@ -19,6 +19,7 @@ var _speed: float
 @export var SPEED_DEFAULT: float = 2.0
 @export var SPEED_CROUCH: float = 1.0
 @export var SPEED_RUN: float = 10.0
+@export var SPEED_DASH: float = 30.0
 
 @export var JUMP_VELOCITY: float = 4.5
 @export_range(5, 10, 0.1) var CROUCH_SPEED: float = 7.0
@@ -56,6 +57,8 @@ func _set_movement_speed(state: String):
 			_speed = SPEED_CROUCH
 		"running":
 			_speed = SPEED_RUN
+		"dashing":
+			_speed = SPEED_DASH
 
 
 func _input(event):
@@ -64,8 +67,10 @@ func _input(event):
 	
 	if event.is_action_pressed("run"):
 		_set_movement_speed("running")
-	elif event.is_action_released("run"):
+		await get_tree().create_timer(0.1).timeout
 		_set_movement_speed("default")
+	#elif event.is_action_released("run"):
+		#_set_movement_speed("default")
 
 
 func _toggle_crouch():
